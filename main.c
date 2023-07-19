@@ -57,8 +57,8 @@ void timerCallBack(struct tm *timeStructure, int randomValue, FILE *file1, FILE 
 int main() {
     time_t currentTime;
     struct tm *timeStructure;
-    FILE *file1;
-    FILE *file2;
+    FILE *file1 = NULL;
+    FILE *file2 = NULL;
     time_t previousTime = get_current_time();
 
     while(1)
