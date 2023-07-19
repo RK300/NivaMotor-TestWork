@@ -56,7 +56,6 @@ void timerCallBack(struct tm *timeStructure, int randomValue, FILE *file1, FILE 
 
 int main() {
     time_t currentTime;
-    int randomValue;
     struct tm *timeStructure;
     FILE *file1;
     FILE *file2;
@@ -68,9 +67,8 @@ int main() {
         if (currentTime - previousTime >= 1)
         {
             timeStructure = localtime(&currentTime);
-            randomValue = get_random_value();
             previousTime = currentTime;
-            timerCallBack(timeStructure, randomValue, file1, file2);
+            timerCallBack(timeStructure, get_random_value(), file1, file2);
         }
     }
 }
