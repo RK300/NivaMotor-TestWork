@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+const char file1Name[255] = "file1.txt";
+const char file2Name[255] = "file2.txt";
+const int maxLines = 10;
+
 time_t get_current_time() {
     return time(NULL);
 }
@@ -34,9 +38,9 @@ int get_count_lines(char filename[255]) {
     return countLines;
 }
 
-void timerCallBack(struct tm *timeStructure, int randomValue, FILE *file1, FILE *file2, int maxLines, char file1Name[255], char file2Name[255]) {
-    file1 = fopen(file1Name, "a");
-    file2 = fopen(file2Name, "a");
+void timerCallBack(struct tm *timeStructure, int randomValue, FILE *file1, FILE *file2) {
+    file1 = fopen(file1Name, "a+");
+    file2 = fopen(file2Name, "a+");
 
     fprintf (file1,"%d\n", randomValue);
 
@@ -46,27 +50,19 @@ void timerCallBack(struct tm *timeStructure, int randomValue, FILE *file1, FILE 
     fclose(file1);
     fclose(file2);
 
-    if (get_count_lines(file2Name) == maxLines)
-        clear_file(file2Name);
+    if (get_count_lines((char*)file2Name) == maxLines)
+        clear_file((char*)file2Name);
 }
 
 int main() {
-    char file1Name[255] = "file1.txt";
-    char file2Name[255] = "file2.txt";
-    int maxLines = 10;
     time_t currentTime;
     int randomValue;
     struct tm *timeStructure;
-
-    FILE *file1 = fopen(file1Name, "w");
-    FILE *file2 = fopen(file2Name, "w");
-
-    fclose(file1);
-    fclose(file2);
-
+    FILE *file1;
+    FILE *file2;
     time_t previousTime = get_current_time();
 
-    while (1)
+    while(1)
     {
         currentTime = get_current_time();
         if (currentTime - previousTime >= 1)
@@ -74,7 +70,7 @@ int main() {
             timeStructure = localtime(&currentTime);
             randomValue = get_random_value();
             previousTime = currentTime;
-            timerCallBack(timeStructure, randomValue, file1, file2, maxLines, file1Name, file2Name);
+            timerCallBack(timeStructure, randomValue, file1, file2);
         }
     }
 }
